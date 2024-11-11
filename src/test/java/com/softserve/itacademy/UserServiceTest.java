@@ -11,6 +11,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.UserService;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -330,5 +331,31 @@ public class UserServiceTest {
     void testDeleteUserByEmail_EmailIsNull() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> userService.deleteUserByEmail(null));
         assertEquals("Email cannot be null", exception.getMessage());
+    }
+
+    @Test
+    public void testGetAll_WhenListIsEmpty() {
+        List<User> users = userService.getAll();
+
+        assertNotNull(users, "Returned list should not be null");
+        assertTrue(users.isEmpty(), "Returned list should be empty");
+    }
+
+    @Test
+    public void testGetAll_WhenListHasUsers() {
+        User user1 = newUser;
+        User user2 = new User("Jane", "Smith", "jane@smith.com", "password", null);
+
+        userService.addUser(user1);
+        userService.addUser(user2);
+
+        List<User> users = userService.getAll();
+
+        assertNotNull(users, "Returned list should not be null");
+        assertEquals(2, users.size(), "List should contain 2 users");
+        assertTrue(users.contains(user1), "List should contain user1");
+        assertTrue(users.contains(user2), "List should contain user2");
+
+        users.clear();
     }
 }
