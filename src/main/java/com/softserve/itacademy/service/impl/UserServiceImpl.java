@@ -24,14 +24,15 @@ public class UserServiceImpl implements UserService {
     public User addUser(User user) {
         if (user == null) throw new IllegalArgumentException("User cannot be null");
         String email = user.getEmail();
+        String firstName = user.getFirstName();
+        String lastName = user.getLastName();
+        String password = user.getPassword();
 
-        if (!isValidEmail(email)) throw new InvalidEmailFormatException();
-
+        if (email != null && !isValidEmail(email)) throw new InvalidEmailFormatException();
         if (findUserByEmail(email).isPresent()) throw new EmailAlreadyExistsException(email);
-
-        if (!isValidUserName(user.getFirstName(), user.getLastName())) throw new InvalidNameFormatException();
-
-        if (isValidPassword(user.getPassword())) throw new InvalidPasswordFormatException();
+        if (firstName != null && !isValidFirstName(firstName)) throw new InvalidNameFormatException();
+        if (lastName != null && !isValidLastName(lastName)) throw new InvalidNameFormatException();
+        if (password != null && isValidPassword(password)) throw new InvalidPasswordFormatException();
 
         users.add(user);
         return user;
