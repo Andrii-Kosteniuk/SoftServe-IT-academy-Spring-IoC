@@ -17,7 +17,7 @@ import static com.softserve.itacademy.validation.UserValidator.*;
 public class UserServiceImpl implements UserService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
-    private List<User> users;
+    private final List<User> users;
 
     public UserServiceImpl() {
         users = new ArrayList<>();
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addUser(User user) {
-        if (user == null) throw new IllegalArgumentException("User cannot be null");
+        requireNonNull(user, "User cannot be null");
         String email = user.getEmail();
         String firstName = user.getFirstName();
         String lastName = user.getLastName();
@@ -55,7 +55,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUserByEmail(String email, User updatedUser) {
-        if (email == null || updatedUser == null) throw new IllegalArgumentException("Email and user data cannot be null");
+        requireNonNull(updatedUser, "User cannot be null");
+        requireNonNull(email, "Email cannot be null");
         User existingUser = findUserByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
 
         String newEmail = updatedUser.getEmail();
@@ -76,7 +77,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserByEmail(String email) {
-        if (email == null) throw new IllegalArgumentException("Email cannot be null");
+        requireNonNull(email, "Email cannot be null");
 
         if (!users.removeIf(user -> user.getEmail().equals(email))) {
             LOGGER.info("User was not found, deletion failed.");
