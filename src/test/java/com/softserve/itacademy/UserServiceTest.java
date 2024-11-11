@@ -1,9 +1,6 @@
 package com.softserve.itacademy;
 
-import com.softserve.itacademy.exception.user.InvalidEmailFormatException;
-import com.softserve.itacademy.exception.user.InvalidNameFormatException;
-import com.softserve.itacademy.exception.user.InvalidPasswordFormatException;
-import com.softserve.itacademy.exception.user.NoChangesMadeException;
+import com.softserve.itacademy.exception.user.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -311,5 +308,27 @@ public class UserServiceTest {
         assertNotEquals("short", foundUser.get().getPassword(), "Password should not be changed");
 
         userService.deleteUserByEmail(existingEmail);
+    }
+
+    @Test
+    void testDeleteUserByEmail_Success() {
+        User existingUser = userService.addUser(newUser);
+        String existingEmail = existingUser.getEmail();
+
+        userService.deleteUserByEmail(existingEmail);
+
+        assertTrue(userService.getAll().isEmpty());
+    }
+
+    @Test
+    void testDeleteUserByEmail_UserNotFound() {
+        UserNotFoundException exception = assertThrows(UserNotFoundException.class, () -> userService.deleteUserByEmail("john@doe.com"));
+        assertEquals("User with email john@doe.com not found", exception.getMessage());
+    }
+
+    @Test
+    void testDeleteUserByEmail_EmailIsNull() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> userService.deleteUserByEmail(null));
+        assertEquals("Email cannot be null", exception.getMessage());
     }
 }
