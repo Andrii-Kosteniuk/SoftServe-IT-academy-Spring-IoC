@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
         updated |= updatePassword(newPassword, existingUser);
 
         if (!updated) throw new NoChangesMadeException();
-
+        LOGGER.info("Successfully updated user with email: {}", existingUser.getEmail());
         return existingUser;
     }
 
