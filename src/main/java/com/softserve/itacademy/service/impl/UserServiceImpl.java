@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.softserve.itacademy.exception.user.*;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.softserve.itacademy.model.User;
@@ -14,6 +16,7 @@ import static com.softserve.itacademy.validation.UserValidator.*;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
     private List<User> users;
 
     public UserServiceImpl() {
@@ -32,9 +35,10 @@ public class UserServiceImpl implements UserService {
         if (findUserByEmail(email).isPresent()) throw new EmailAlreadyExistsException(email);
         if (firstName != null && !isValidFirstName(firstName)) throw new InvalidNameFormatException();
         if (lastName != null && !isValidLastName(lastName)) throw new InvalidNameFormatException();
-        if (password != null && isValidPassword(password)) throw new InvalidPasswordFormatException();
+        if (password != null && !isValidPassword(password)) throw new InvalidPasswordFormatException();
 
         users.add(user);
+        LOGGER.info("Successfully added user with email: {}", email);
         return user;
     }
 
@@ -46,13 +50,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user) {
+    public User updateUserByEmail(String email, User user) {
         // TODO
         return null;
     }
 
     @Override
-    public void deleteUser(User user) {
+    public void deleteUserByEmail(String email) {
         // TODO
     }
 
