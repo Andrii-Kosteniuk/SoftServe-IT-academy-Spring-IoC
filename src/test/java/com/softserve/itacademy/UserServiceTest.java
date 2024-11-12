@@ -1,7 +1,6 @@
 package com.softserve.itacademy;
 
 import com.softserve.itacademy.exception.user.*;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
