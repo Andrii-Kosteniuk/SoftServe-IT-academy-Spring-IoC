@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAll() {
-        return users;
+        return new ArrayList<>(users);
     }
 
     private boolean updateEmail(String newEmail, User existingUser) {

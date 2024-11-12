@@ -3,7 +3,6 @@ package com.softserve.itacademy.model;
 import lombok.*;
 
 import java.util.List;
-import java.util.ArrayList;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +20,6 @@ public class User {
 
     private String password;
 
-    private List<ToDo> myTodos = new ArrayList<>();
+    private List<ToDo> myTodos;
 
 }
