@@ -23,7 +23,7 @@ public class UserValidator {
     }
 
     private static boolean validateEmail(String email) {
-        String regex = "^[a-zA-Z]+@[a-zA-Z]+\\.[a-zA-Z]+$";
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9-]+(?:\\.[A-Za-z0-9-]+)*\\.[A-Za-z]{2,}$";
         return email.matches(regex);
     }
 
