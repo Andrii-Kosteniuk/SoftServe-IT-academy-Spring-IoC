@@ -1,7 +1,6 @@
 package com.softserve.itacademy.service.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +40,7 @@ public class UserServiceImpl implements UserService {
         if (findUserByEmail(email).isPresent()) throw new EmailAlreadyExistsException(email);
         if (!isValidFirstName(firstName) || !isValidLastName(lastName)) throw new InvalidNameFormatException();
         if (!isValidPassword(password)) throw new InvalidPasswordFormatException();
-        if (user.getMyTodos() == null) user.setMyTodos(Collections.emptyList());
+        if (user.getMyTodos() == null) user.setMyTodos(new ArrayList<>());
 
         users.add(user);
         LOGGER.info("Successfully added user with email: {}", email);

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.UserService;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,7 +43,7 @@ public class UserServiceTest {
     @Test
     void testAddUser_Success() {
         User expectedUser = new User("John", "Doe",
-                "john@doe.com", "password", Collections.emptyList());
+                "john@doe.com", "password", new ArrayList<>());
 
         User actualUser = userService.addUser(newUser);
 
