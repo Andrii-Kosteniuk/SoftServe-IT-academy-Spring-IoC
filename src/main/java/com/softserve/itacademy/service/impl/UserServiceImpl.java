@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
         requireNonNull(email, "Email cannot be null");
 
         if (!users.removeIf(user -> user.getEmail().equals(email))) {
-            LOGGER.info("User was not found, deletion failed.");
+            LOGGER.error("User was not found, deletion failed.");
             throw new UserNotFoundException(email);
         }
         LOGGER.info("Successfully deleted user with email: {}", email);
