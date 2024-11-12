@@ -11,6 +11,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.UserService;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +43,7 @@ public class UserServiceTest {
     @Test
     void testAddUser_Success() {
         User expectedUser = new User("John", "Doe",
-                "john@doe.com", "password", null);
+                "john@doe.com", "password", Collections.emptyList());
 
         User actualUser = userService.addUser(newUser);
 
@@ -148,7 +149,7 @@ public class UserServiceTest {
         assertEquals(userToBeUpdated.getFirstName(), updatedUser.getFirstName(), "First names should match");
         assertEquals(userToBeUpdated.getLastName(), updatedUser.getLastName(), "Last names should match");
         assertEquals(userToBeUpdated.getPassword(), updatedUser.getPassword(), "Passwords should match");
-        assertNull(updatedUser.getMyTodos());
+        assertTrue(updatedUser.getMyTodos().isEmpty(), "MyTodos should be empty");
 
         Optional<User> foundUser = userService.findUserByEmail(updatedUser.getEmail());
         assertTrue(foundUser.isPresent(), "User not found after update");
@@ -173,7 +174,7 @@ public class UserServiceTest {
         assertEquals("John", updatedUser.getFirstName(), "First names should match");
         assertEquals("Doe", updatedUser.getLastName(), "Last names should match");
         assertEquals("password", updatedUser.getPassword(), "Passwords should match");
-        assertNull(updatedUser.getMyTodos());
+        assertTrue(updatedUser.getMyTodos().isEmpty(), "MyTodos should be empty");
 
         Optional<User> notFoundUser = userService.findUserByEmail(existingEmail);
         assertFalse(notFoundUser.isPresent(), "User with old email should not exist after update");
@@ -202,7 +203,7 @@ public class UserServiceTest {
         // assert unchanged fields
         assertEquals("password", updatedUser.getPassword(), "Passwords should match");
         assertEquals(existingEmail, updatedUser.getEmail(), "Email should match");
-        assertNull(updatedUser.getMyTodos());
+        assertTrue(updatedUser.getMyTodos().isEmpty(), "MyTodos should be empty");
 
         Optional<User> foundUser = userService.findUserByEmail(existingEmail);
         assertTrue(foundUser.isPresent(), "User not found after update");
@@ -226,7 +227,7 @@ public class UserServiceTest {
         assertEquals("John", updatedUser.getFirstName(), "First names should match");
         assertEquals("Doe", updatedUser.getLastName(), "Last names should match");
         assertEquals(existingEmail, updatedUser.getEmail(), "Email should match");
-        assertNull(updatedUser.getMyTodos());
+        assertTrue(updatedUser.getMyTodos().isEmpty(), "MyTodos should be empty");
 
         Optional<User> foundUser = userService.findUserByEmail(existingEmail);
         assertTrue(foundUser.isPresent(), "User not found after update");
