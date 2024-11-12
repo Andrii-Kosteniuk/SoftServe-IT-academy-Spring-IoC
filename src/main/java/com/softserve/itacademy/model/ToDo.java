@@ -3,8 +3,8 @@ package com.softserve.itacademy.model;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-
 
 @Data
 @NoArgsConstructor
@@ -25,6 +25,10 @@ public class ToDo {
         this.tasks = builder.tasks;
     }
 
+    public List<Task> getTasks() {
+        if (tasks == null) tasks = new ArrayList<>();
+        return tasks;
+    }
 
     public static class ToDoBuilder {
         private String title;
