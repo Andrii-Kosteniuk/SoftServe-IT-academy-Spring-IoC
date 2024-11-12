@@ -1,8 +1,17 @@
 package com.softserve.itacademy.model;
 
+import lombok.*;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class ToDo {
 
     private String title;
@@ -11,8 +20,5 @@ public class ToDo {
 
     private User owner;
 
-    private List<Task> tasks;
-
-    // Constructor(s), getters, setters, hashCode, equals, etc.
-
+    private List<Task> tasks = new ArrayList<>();
 }

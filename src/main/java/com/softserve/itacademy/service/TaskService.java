@@ -1,6 +1,7 @@
 package com.softserve.itacademy.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.softserve.itacademy.model.Task;
 import com.softserve.itacademy.model.ToDo;
@@ -10,9 +11,11 @@ public interface TaskService {
     
     Task addTask(Task task, ToDo todo);
 
-    Task updateTask(Task task);
+    Task updateTask(String name, Task task);
 
-    void deleteTask(Task task);
+    void deleteTaskByName(String name);
+
+    Optional<Task> findTaskByName(String name);
 
     List<Task> getAll();
 

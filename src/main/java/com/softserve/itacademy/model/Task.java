@@ -1,11 +1,20 @@
 package com.softserve.itacademy.model;
 
+import lombok.*;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@ToString
 public class Task {
 
     private String name;
 
     private Priority priority;
 
-    // Constructor(s), getters, setters, hashCode, equals, etc.
-
+    public Task(String oldTask) {
+        this.name = oldTask;
+    }
 }
