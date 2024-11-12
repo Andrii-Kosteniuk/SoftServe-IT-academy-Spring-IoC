@@ -74,7 +74,7 @@ public class ToDoServiceImpl implements ToDoService {
                 .filter(user -> user.getMyTodos().stream()
                         .anyMatch(toDo -> toDo.getTitle().equals(todo.getTitle())))
                 .findFirst()
-                .map(user -> user.getMyTodos().removeIf(toDo -> toDo.equals(todo)));
+                .ifPresent(user -> user.getMyTodos().removeIf(toDo -> toDo.equals(todo)));
     }
 
     public List<ToDo> getAll() {
@@ -108,7 +108,7 @@ public class ToDoServiceImpl implements ToDoService {
                 .orElse(null);
     }
 
-    private void checkIfTodoIsCorrect(ToDo toDo) {
+    public void checkIfTodoIsCorrect(ToDo toDo) {
         if (toDo.getTitle().isEmpty()
             || toDo.getCreatedAt().isAfter(LocalDateTime.now())) {
             throw new ToDoException("Something went wrong!!! Todo has incorrect data");
