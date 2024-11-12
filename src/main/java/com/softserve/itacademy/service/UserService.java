@@ -1,6 +1,7 @@
 package com.softserve.itacademy.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.softserve.itacademy.model.User;
 
@@ -8,9 +9,11 @@ public interface UserService {
     
     User addUser(User user);
 
-    User updateUser(User user);
+    Optional<User> findUserByEmail(String email);
 
-    void deleteUser(User user);
+    User updateUserByEmail(String email, User updatedUser);
+
+    void deleteUserByEmail(String email);
 
     List<User> getAll();
 
