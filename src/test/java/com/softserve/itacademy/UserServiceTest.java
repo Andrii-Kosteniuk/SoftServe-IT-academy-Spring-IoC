@@ -11,7 +11,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.UserService;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,8 +24,8 @@ public class UserServiceTest {
     private static UserService userService;
     private User newUser;
 
-    @BeforeAll
-    public static void setupBeforeClass() throws Exception {
+    @BeforeEach
+    void setUp() {
         AnnotationConfigApplicationContext annotationConfigContext = new AnnotationConfigApplicationContext(Config.class);
         userService = annotationConfigContext.getBean(UserService.class);
         annotationConfigContext.close();
@@ -43,7 +43,7 @@ public class UserServiceTest {
     @Test
     void testAddUser_Success() {
         User expectedUser = new User("John", "Doe",
-                "john@doe.com", "password", Collections.emptyList());
+                "john@doe.com", "password", new ArrayList<>());
 
         User actualUser = userService.addUser(newUser);
 
@@ -52,8 +52,6 @@ public class UserServiceTest {
         Optional<User> foundUser = userService.findUserByEmail(actualUser.getEmail());
         assertTrue(foundUser.isPresent(), "User not found");
         assertEquals(expectedUser, foundUser.get(), "Users should be equal");
-
-        userService.deleteUserByEmail(actualUser.getEmail());
     }
 
     @Test
@@ -154,8 +152,6 @@ public class UserServiceTest {
         Optional<User> foundUser = userService.findUserByEmail(updatedUser.getEmail());
         assertTrue(foundUser.isPresent(), "User not found after update");
         assertEquals(updatedUser, foundUser.get(), "Updated user should match the found user");
-
-        userService.deleteUserByEmail(updatedUser.getEmail());
     }
 
     @Test
@@ -182,8 +178,6 @@ public class UserServiceTest {
         Optional<User> foundUser = userService.findUserByEmail(newEmail);
         assertTrue(foundUser.isPresent(), "User with new email should exist after update");
         assertEquals(updatedUser, foundUser.get(), "Updated user should match the found user");
-
-        userService.deleteUserByEmail(updatedUser.getEmail());
     }
 
     @Test
@@ -208,8 +202,6 @@ public class UserServiceTest {
         Optional<User> foundUser = userService.findUserByEmail(existingEmail);
         assertTrue(foundUser.isPresent(), "User not found after update");
         assertEquals(updatedUser, foundUser.get(), "Updated user should match the found user");
-
-        userService.deleteUserByEmail(updatedUser.getEmail());
     }
 
     @Test
@@ -232,8 +224,6 @@ public class UserServiceTest {
         Optional<User> foundUser = userService.findUserByEmail(existingEmail);
         assertTrue(foundUser.isPresent(), "User not found after update");
         assertEquals(updatedUser, foundUser.get(), "Updated user should match the found user");
-
-        userService.deleteUserByEmail(updatedUser.getEmail());
     }
 
     @Test
@@ -245,8 +235,6 @@ public class UserServiceTest {
                 () -> userService.updateUserByEmail(existingEmail, null));
 
         assertEquals("User cannot be null", exception.getMessage());
-
-        userService.deleteUserByEmail(existingEmail);
     }
 
     @Test
@@ -258,8 +246,6 @@ public class UserServiceTest {
         NoChangesMadeException exception = assertThrows(NoChangesMadeException.class, () -> userService.updateUserByEmail(existingEmail, userToBeUpdated));
 
         assertEquals("No changes have been made.", exception.getMessage());
-
-        userService.deleteUserByEmail(existingEmail);
     }
 
     @Test
@@ -274,8 +260,6 @@ public class UserServiceTest {
 
         Optional<User> foundUser = userService.findUserByEmail(existingEmail);
         assertTrue(foundUser.isPresent(), "User not found after update");
-
-        userService.deleteUserByEmail(existingEmail);
     }
 
     @Test
@@ -291,8 +275,6 @@ public class UserServiceTest {
         Optional<User> foundUser = userService.findUserByEmail(existingEmail);
         assertTrue(foundUser.isPresent(), "User not found after update");
         assertNotEquals("inv@lid", foundUser.get().getFirstName(), "Old name should not be changed");
-
-        userService.deleteUserByEmail(existingEmail);
     }
 
     @Test
@@ -308,8 +290,6 @@ public class UserServiceTest {
         Optional<User> foundUser = userService.findUserByEmail(existingEmail);
         assertTrue(foundUser.isPresent(), "User not found after update");
         assertNotEquals("short", foundUser.get().getPassword(), "Password should not be changed");
-
-        userService.deleteUserByEmail(existingEmail);
     }
 
     @Test
@@ -356,7 +336,5 @@ public class UserServiceTest {
         assertEquals(2, users.size(), "List should contain 2 users");
         assertTrue(users.contains(user1), "List should contain user1");
         assertTrue(users.contains(user2), "List should contain user2");
-
-        users.clear();
     }
 }
