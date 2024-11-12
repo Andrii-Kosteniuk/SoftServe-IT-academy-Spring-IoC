@@ -55,6 +55,7 @@ public class TaskServiceTest {
         user.setLastName("Doe");
         user.setEmail("john.doe@gmail.com");
         user.setPassword("password");
+        user.setMyTodos(new ArrayList<>());
 
         todo = new ToDo();
         todo.setTitle("MyToDo");
