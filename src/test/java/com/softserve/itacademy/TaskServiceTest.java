@@ -50,17 +50,18 @@ public class TaskServiceTest {
     public void setup() {
         task = new Task("Task", Priority.HIGH);
 
+
+        todo = new ToDo();
+        todo.setTitle("MyToDo");
+        todo.setCreatedAt(LocalDateTime.now());
+        todo.setOwner(user);
+
         user = new User();
         user.setFirstName("John");
         user.setLastName("Doe");
         user.setEmail("john.doe@gmail.com");
         user.setPassword("password");
         user.setMyTodos(new ArrayList<>());
-
-        todo = new ToDo();
-        todo.setTitle("MyToDo");
-        todo.setCreatedAt(LocalDateTime.now());
-        todo.setOwner(user);
 
         user.getMyTodos().add(todo);
     }

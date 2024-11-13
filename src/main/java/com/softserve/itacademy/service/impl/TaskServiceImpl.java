@@ -1,5 +1,6 @@
 package com.softserve.itacademy.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +31,7 @@ public class TaskServiceImpl implements TaskService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
     private ToDoService toDoService;
-    private List<Task> tasks;
+    private List<Task> tasks = new ArrayList<>();
 
     @Autowired
     public TaskServiceImpl(ToDoService toDoService) {

@@ -1,7 +1,11 @@
 package com.softserve.itacademy;
 
+import com.softserve.itacademy.model.Priority;
+import com.softserve.itacademy.model.Task;
 import com.softserve.itacademy.model.ToDo;
 import com.softserve.itacademy.model.User;
+import com.softserve.itacademy.service.TaskService;
+import com.softserve.itacademy.service.impl.TaskServiceImpl;
 import com.softserve.itacademy.service.impl.ToDoServiceImpl;
 import com.softserve.itacademy.service.impl.UserServiceImpl;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -18,6 +22,7 @@ public class Application {
 
         UserServiceImpl userService = annotationConfigContext.getBean(UserServiceImpl.class);
         ToDoServiceImpl toDoService = annotationConfigContext.getBean(ToDoServiceImpl.class);
+        TaskServiceImpl taskService = annotationConfigContext.getBean(TaskServiceImpl.class);
 
         System.out.println("USER_SERVICE: === Adding Users ===");
         User user1 = new User("John", "Doe", "john@doe.com", "password", null);
@@ -46,7 +51,6 @@ public class Application {
 
         System.out.println("\nUSER_SERVICE: === All Users After Updates ===");
         userService.getAll().forEach(user -> System.out.println("USER_SERVICE: " + user));
-
 
 
         System.out.println("\n ========================================================");
@@ -129,6 +133,54 @@ public class Application {
 
         System.out.println("Previously we have deleted a todo with title \"Todo-2\" so that we get a null \n");
         System.out.println("Todos by user and title is such --> " + byUserTitle2 + " \n");
+
+
+        System.out.println("\n ========================================================");
+
+        System.out.print("           +++++ TaskService implementation +++++");
+
+        System.out.println("\n ========================================================");
+
+
+        Task task1 = new Task("Task1", Priority.HIGH);
+        Task task2 = new Task("Task2", Priority.LOW);
+        Task task3 = new Task("Task3", Priority.MEDIUM);
+
+        System.out.println("\nTASK_SERVICE: ====> Assigning tasks to specific todo <====");
+
+        taskService.addTask(task1, todo_1);
+        System.out.println("TASK_SERVICE: Task: " + task1 + " was added to " + todo_1 + " todo list");
+
+        taskService.addTask(task2, todo_2);
+        System.out.println("TASK_SERVICE: Task: " + task2 + " was added to " + todo_2 + " todo list");
+
+        taskService.addTask(task3, todo_3);
+        System.out.println("TASK_SERVICE: Task: " + task3 + " was added to " + todo_3 + " todo list");
+
+        System.out.println("\nTASK_SERVICE: ====> Retrieving all existing tasks  <====");
+
+        for (Task task : taskService.getAll())
+            System.out.println(task + "\n");
+
+        System.out.println("TASK_SERVICE: ====> Updating task  <====");
+        Task task1_updated = new Task("UpdatedTask1", Priority.LOW);
+        taskService.updateTask("Task1", task1_updated);
+        System.out.println("TASK_SERVICE: Task " + task1 + " has been updated");
+        System.out.println("TASK_SERVICE: Now it has new name and priority:  [" + taskService.getAll().get(0).getName()
+                + ", " + taskService.getAll().get(0).getPriority() + "] \n");
+
+        System.out.println("TASK_SERVICE: ====> Deletion task  <====");
+        taskService.deleteTaskByName("Task3");
+        System.out.println("TASK_SERVICE: Task " + task3.getName() + " was deleted from todo list");
+        System.out.println("TASK_SERVICE: Now we have only " + taskService.getAll().size() + " tasks");
+
+        System.out.println("\nTASK_SERVICE: ====> Getting tasks by todo <====");
+
+        List<Task> todoTasks = taskService.getByToDo(todo_1);
+
+        System.out.println("TASK_SERVICE: Task by todo " + todoTasks + "--> " + todo_1 + " \n");
+
+
 
         System.out.println("\nUSER_SERVICE: === Deleting Users ===");
         userService.deleteUserByEmail(user1.getEmail());
