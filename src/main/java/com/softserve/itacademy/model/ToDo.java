@@ -1,12 +1,18 @@
 package com.softserve.itacademy.model;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+
+@Getter
+@Setter
+@EqualsAndHashCode
 @NoArgsConstructor
 public class ToDo {
 
@@ -28,6 +34,17 @@ public class ToDo {
     public List<Task> getTasks() {
         if (tasks == null) tasks = new ArrayList<>();
         return tasks;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("ToDo{");
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", owner=").append(owner.getFirstName()).append(owner.getLastName());
+        sb.append("createdAt=").append(createdAt);
+        sb.append(", tasks=").append(tasks);
+        sb.append('}');
+        return sb.toString();
     }
 
     public static class ToDoBuilder {
