@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,12 +20,10 @@ import java.util.stream.Collectors;
 public class ToDoServiceImpl implements ToDoService {
 
     private final UserService userService;
-    private final List<User> allUsers;
 
     @Autowired
     public ToDoServiceImpl(UserService userService) {
         this.userService = userService;
-        allUsers = userService.getAll();
     }
 
     private static void checkToDoIsNotNull(ToDo todo) {
@@ -40,25 +40,31 @@ public class ToDoServiceImpl implements ToDoService {
 
 
         // Here I find a user and add to-do to his toDoList that is called "myTodos" and return this to-do
-        Optional<User> user = allUsers.stream()
+        Optional<User> user = userService.getAll().stream()
                 .filter(u -> u.getFirstName().equals(givenUser.getFirstName()))
                 .findFirst();
 
-        user.ifPresent(u -> u.getMyTodos().add(givenToDo));
-
-        return givenToDo;
+        if (user.isPresent()) {
+            if (user.get().getMyTodos() == null) {
+                user.get().setMyTodos(new ArrayList<>());
+            }
+            user.get().getMyTodos().add(givenToDo);
+            return givenToDo;
+        }
+        throw new IllegalArgumentException("User " + givenUser + "  not found");
     }
 
+    // I use comparison by date createdAt like unique id for to-do item to avoid updating not appropriate to-do item
     public ToDo updateTodo(ToDo todo) {
         checkToDoIsNotNull(todo);
         checkIfTodoIsCorrect(todo);
 
         // Here I find the to-do which I want to update. Then I set it to toDoList
-        for (User user : allUsers) {
+        for (User user : userService.getAll()) {
             List<ToDo> todos = user.getMyTodos();
             for (int i = 0; i < todos.size(); i++) {
                 ToDo toDo = todos.get(i);
-                if (toDo.getTitle().equals(todo.getTitle())) {
+                if (toDo.getCreatedAt().equals(todo.getCreatedAt())) {
                     todos.set(i, todo);
                     return todo;
                 }
@@ -67,19 +73,21 @@ public class ToDoServiceImpl implements ToDoService {
         return null;
     }
 
+    // I use comparison by date createdAt like unique id for to-do item to avoid updating not appropriate to-do item
     public void deleteTodo(ToDo todo) {
         checkToDoIsNotNull(todo);
 
-        allUsers.stream()
+        userService.getAll().stream()
                 .filter(user -> user.getMyTodos().stream()
-                        .anyMatch(toDo -> toDo.getTitle().equals(todo.getTitle())))
+                        .anyMatch(toDo -> toDo.getCreatedAt().equals(todo.getCreatedAt())))
                 .findFirst()
-                .ifPresent(user -> user.getMyTodos().removeIf(toDo -> toDo.equals(todo)));
+                .ifPresent(user -> user.getMyTodos().removeIf(toDo -> toDo.getTitle().equals(todo.getTitle())));
     }
 
     public List<ToDo> getAll() {
-        return allUsers.stream()
-                .flatMap(user -> user.getMyTodos().stream())
+        return userService.getAll()
+                .stream()
+                .flatMap(user -> Optional.ofNullable(user.getMyTodos()).orElse(Collections.emptyList()).stream())
                 .collect(Collectors.toList());
     }
 
@@ -99,13 +107,12 @@ public class ToDoServiceImpl implements ToDoService {
             throw new IllegalArgumentException("You provide incorrect data");
         }
 
-        return allUsers
+        return userService.getAll()
                 .stream()
                 .filter(user -> user.equals(givenUser))
                 .flatMap(user -> user.getMyTodos().stream())
                 .filter(toDo -> toDo.getTitle().equals(givenTitle))
-                .findFirst()
-                .orElse(null);
+                .findFirst().orElse(null);
     }
 
     public void checkIfTodoIsCorrect(ToDo toDo) {

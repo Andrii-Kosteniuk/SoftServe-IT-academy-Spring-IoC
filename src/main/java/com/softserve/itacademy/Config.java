@@ -7,4 +7,5 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan("com.softserve.itacademy.service")
 public class Config {
 
+
 }
