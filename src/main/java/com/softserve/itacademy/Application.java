@@ -19,46 +19,34 @@ public class Application {
         UserServiceImpl userService = annotationConfigContext.getBean(UserServiceImpl.class);
         ToDoServiceImpl toDoService = annotationConfigContext.getBean(ToDoServiceImpl.class);
 
-        System.out.println("=== Adding Users ===");
+        System.out.println("USER_SERVICE: === Adding Users ===");
         User user1 = new User("John", "Doe", "john@doe.com", "password", null);
         User user2 = new User("Jane", "Smith", "jane@smith.com", "password", null);
         User user3 = new User("Joe", "Braun", "joe@braun.com", "password", null);
 
         userService.addUser(user1);
-        System.out.println("Added: " + user1);
+        System.out.println("USER_SERVICE: Added: " + user1);
         userService.addUser(user2);
-        System.out.println("Added: " + user2);
+        System.out.println("USER_SERVICE: Added: " + user2);
         userService.addUser(user3);
-        System.out.println("Added: " + user3);
+        System.out.println("USER_SERVICE: Added: " + user3);
 
-        System.out.println("\n=== All Users After Adding ===");
-        userService.getAll().forEach(System.out::println);
+        System.out.println("\nUSER_SERVICE: === All Users After Adding ===");
+        userService.getAll().forEach(user -> System.out.println("USER_SERVICE: " + user));
 
-        System.out.println("\n=== Updating Users ===");
+        System.out.println("\nUSER_SERVICE: === Updating Users ===");
         userService.updateUserByEmail(user1.getEmail(), new User(null, null, null, "newPassword123", null));
-        System.out.println("Updated password for: " + user1.getEmail());
+        System.out.println("USER_SERVICE: Updated password for: " + user1.getEmail());
 
         userService.updateUserByEmail(user2.getEmail(), new User(null, null, "jane.smith123@example.com", null, null));
-        System.out.println("Updated email for: " + user2.getEmail());
+        System.out.println("USER_SERVICE: Updated email for: " + user2.getEmail());
 
         userService.updateUserByEmail(user3.getEmail(), new User("Jessica", "White", "jessica@white.com", null, null));
-        System.out.println("Updated name and email for: " + user3.getEmail());
+        System.out.println("USER_SERVICE: Updated name and email for: " + user3.getEmail());
 
-        System.out.println("\n=== All Users After Updates ===");
-        userService.getAll().forEach(System.out::println);
+        System.out.println("\nUSER_SERVICE: === All Users After Updates ===");
+        userService.getAll().forEach(user -> System.out.println("USER_SERVICE: " + user));
 
-        System.out.println("\n=== Deleting Users ===");
-        userService.deleteUserByEmail(user1.getEmail());
-        System.out.println("Deleted: " + user1.getEmail());
-
-        userService.deleteUserByEmail(user2.getEmail());
-        System.out.println("Deleted: " + user2.getEmail());
-
-        userService.deleteUserByEmail(user3.getEmail());
-        System.out.println("Deleted: " + user3.getEmail());
-
-        System.out.println("\n=== All Users After Deletions ===");
-        userService.getAll().forEach(System.out::println);
 
 
         System.out.println("\n ========================================================");
@@ -142,6 +130,24 @@ public class Application {
         System.out.println("Previously we have deleted a todo with title \"Todo-2\" so that we get a null \n");
         System.out.println("Todos by user and title is such --> " + byUserTitle2 + " \n");
 
+        System.out.println("\nUSER_SERVICE: === Deleting Users ===");
+        userService.deleteUserByEmail(user1.getEmail());
+        System.out.println("USER_SERVICE: Deleted: " + user1.getEmail());
+
+        userService.deleteUserByEmail(user2.getEmail());
+        System.out.println("USER_SERVICE: Deleted: " + user2.getEmail());
+
+        userService.deleteUserByEmail(user3.getEmail());
+        System.out.println("USER_SERVICE: Deleted: " + user3.getEmail());
+
+        System.out.println("\nUSER_SERVICE: === All Users After Deletions ===");
+        if (userService.getAll().isEmpty()) {
+            System.out.println("USER_SERVICE: User list is empty");
+        } else {
+            userService.getAll().forEach(user -> System.out.println("USER_SERVICE: " + user));
+        }
+
+        annotationConfigContext.close();
     }
 
     private static void printAllToDo(List<ToDo> allTodo) {
