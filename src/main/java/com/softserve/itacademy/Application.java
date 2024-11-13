@@ -92,13 +92,13 @@ public class Application {
         System.out.println("TODO_SERVICE: ====> Assigning todo to specific user <====");
 
         toDoService.addTodo(todo_1, user1);
-        System.out.println("TODO_SERVICE: Add" + todo_1 + " to " + user1 + " todo list");
+        System.out.println("TODO_SERVICE: Add" + todo_1 + " to User: " + user1.getFirstName());
 
         toDoService.addTodo(todo_2, user2);
-        System.out.println("TODO_SERVICE: Add" + todo_2 + " to " + user2 + " todo list");
+        System.out.println("TODO_SERVICE: Add" + todo_2 + " to User: " + user2.getFirstName());
 
         toDoService.addTodo(todo_3, user3);
-        System.out.println("TODO_SERVICE: Add" + todo_3 + " to " + user2 + " todo list \n");
+        System.out.println("TODO_SERVICE: Add" + todo_3 + " to User: " + user3.getFirstName() + "\n");
 
         System.out.println("TODO_SERVICE: ====> Retrieve all existing todo  <====");
 
@@ -139,14 +139,14 @@ public class Application {
         System.out.println("TODO_SERVICE: Todos by user " + gievenUser.getFirstName() + " are: --> " + " \n");
         printInfoAboutToDo(gievenUser.getMyTodos());
 
-        System.out.println("\nTODO_SERVICE: ====> Getting todo by user and title <====");
+        System.out.println("\nTODO_SERVICE: ====> Getting todo by nuser ad title <====");
 
         User givenUser1 = userService.getAll().get(0);
         User givenUser2 = userService.getAll().get(1);
         ToDo toDoByUserTitle1 = toDoService.getByUserTitle(givenUser1, "Todo-1");
         ToDo toDoByUserTitle2 = toDoService.getByUserTitle(givenUser2, "Todo-2");
 
-        System.out.println("TODO_SERVICE: Todo by user " + givenUser1.getFirstName() + "and title \"Todo-1\" is such:  --> " + toDoByUserTitle1.getTitle() + " \n");
+        System.out.println("TODO_SERVICE: Todo by user " + givenUser1.getFirstName() + " and title \"Todo-1\" is such:  --> " + toDoByUserTitle1.getTitle() + " \n");
 
         System.out.println("Previously we have deleted a todo with title \"Todo-2\" so that we get a null \n");
         System.out.println("TODO_SERVICE: Todo by user " + givenUser2.getFirstName() + " and title \"Todo-2\" is such:  --> " + toDoByUserTitle2 + " \n");
