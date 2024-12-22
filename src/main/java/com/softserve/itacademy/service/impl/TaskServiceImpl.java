@@ -5,13 +5,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+
+import com.softserve.itacademy.exception.task.InvalidPriorityFormatException;
+import com.softserve.itacademy.exception.task.NameAlreadyExistsException;
+import com.softserve.itacademy.exception.task.TaskNotFoundException;
 import com.softserve.itacademy.exception.user.InvalidNameFormatException;
 import com.softserve.itacademy.exception.user.NoChangesMadeException;
 import com.softserve.itacademy.exception.user.UserNotFoundException;
 import com.softserve.itacademy.model.Priority;
 
 
-import com.softserve.itacademy.exception.task.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +26,9 @@ import com.softserve.itacademy.model.User;
 import com.softserve.itacademy.service.TaskService;
 import com.softserve.itacademy.service.ToDoService;
 
+import static com.softserve.itacademy.validation.TaskValidator.isValidName;
+import static com.softserve.itacademy.validation.TaskValidator.isValidPriority;
 import static java.util.Objects.requireNonNull;
-import static com.softserve.itacademy.validation.TaskValidator.*;
 
 @Service
 public class TaskServiceImpl implements TaskService {
